@@ -1,9 +1,8 @@
 require_relative "lib/game"
 require_relative "lib/result_printer"
 require_relative "lib/word_reader"
-require "unicode" # Проверка на маленькие буквы
 
-VERSION = "Игра виселица. Версия 3. (c) goodprogrammer.ru\n\n"
+VERSION = "Игра виселица.\n\n"
 sleep 1
 
 word_reader = WordReader.new

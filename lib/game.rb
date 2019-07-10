@@ -5,14 +5,10 @@ class Game
   MAX_ERRORS = 7
 
   def initialize(slovo)
-    slovo = Unicode.downcase(slovo) # Проверка на маленькие буквы
     @letters = get_letters(slovo)
-
     @errors = 0
-
     @good_letters = []
     @bad_letters = []
-
     @status = :in_progress # :won, :lost
   end
 
@@ -21,7 +17,7 @@ class Game
         abort "Вы не ввели слово для игры"
     end
 
-    return slovo.split("")
+    return slovo.upcase.split("")
   end
 
   def max_errors
@@ -42,7 +38,6 @@ class Game
         puts "Вводите только одну букву пожалуйста"
       end
       letter = STDIN.gets.encode("UTF-8").chomp
-      letter = Unicode.downcase(letter) # Проверка на маленькие буквы
     end
 
     next_step(letter)
@@ -50,20 +45,20 @@ class Game
 
   def is_good?(letter)
     letters.include?(letter) ||
-      (letter == "е" && letters.include?("ё")) ||
-      (letter == "ё" && letters.include?("е")) ||
-      (letter == "и" && letters.include?("й")) ||
-      (letter == "й" && letters.include?("и"))
+      (letter == "Е" && letters.include?("Ё")) ||
+      (letter == "Ё" && letters.include?("Е")) ||
+      (letter == "И" && letters.include?("Й")) ||
+      (letter == "Й" && letters.include?("И"))
   end
 
   def add_letter_to(letters, letter)
     letters << letter
 
     case letter
-    when 'и' then letters << 'й'
-    when 'й' then letters << 'и'
-    when 'е' then letters << 'ё'
-    when 'ё' then letters << 'е'
+    when 'И' then letters << 'Й'
+    when 'Й' then letters << 'И'
+    when 'Е' then letters << 'Ё'
+    when 'Ё' then letters << 'Е'
     end
   end
 
@@ -88,6 +83,7 @@ class Game
   end
 
   def next_step(letter)
+    letter.upcase!
     return if @status == :lost || @status == :won
     return if repeated?(letter)
 
@@ -99,7 +95,7 @@ class Game
       add_letter_to(@bad_letters, letter)
       @errors += 1
 
-      self.status = lost if lost?
+      self.status = :lost if lost?
     end
   end
 end
